@@ -1,0 +1,18 @@
+@charset "utf-8";
+.alert-fixed {position: fixed; top: 5px; right: 40px; z-index: 9999; min-width: 300px; width: 40%; opacity:0.96; border-radius:5px;}
+.alert-fixed strong{ margin-right:7px;}
+.contact-info li span.icon-container .fa { font: normal normal normal 14px/2 FontAwesome; }
+/*No results */
+.no_results h2{text-align:center; margin-top:50px; margin-bottom:50px; box-shadow: 0 0 30px rgba(0, 0, 0, 0.08) inset; font-size: 115%; text-align: center; text-shadow: 0 1px 0 #FFFFFF; padding: 60px 20px;}
+/*.widget_tweeter {  height: 250px !important; overflow-y:scroll;} */
+
+@media (max-width:360px){ 
+
+.alert-fixed { position: relative; top:75px; right:0; width:100%; border:none; }
+
+}
+.bottom_btns ul {list-style-type: none;text-align: right;padding: 20px 0px;}
+.bottom_btns ul li {list-style-type: none;display: inline-block;margin: 0px 5px;}
+
+.lobibox.lobibox-confirm .lobibox-header{background-color: #00529c;}
+.lobibox.lobibox-confirm .lobibox-footer{background-color: #00529c;} 

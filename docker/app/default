@@ -1,0 +1,35 @@
+server {
+    error_log /dev/stdout info;
+    access_log /dev/stdout;
+
+    listen 80;
+    listen [::]:80 default_server ipv6only=on;
+
+    listen 443 ssl;
+    ssl_certificate      /etc/ssl/certs/server.crt;
+    ssl_certificate_key  /etc/ssl/private/server.key;
+
+
+    root /var/www/html;
+    index index.php index.html index.htm;
+
+    server_name _;
+
+    location = /favicon.ico { log_not_found off; access_log off; }
+    location = /robots.txt  { log_not_found off; access_log off; }
+
+    # set expiration of assets to MAX for caching
+    location ~* \.(ico|css|js|gif|jpe?g|png)(\?[0-9]+)?$ {
+        expires max;
+        log_not_found off;
+    }
+
+    location / {
+        try_files $uri $uri/ /index.php?/$request_uri;
+    }
+
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/run/php/php7.1-fpm.sock;
+    }
+}

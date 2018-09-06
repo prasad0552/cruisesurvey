@@ -1,0 +1,92 @@
+.user-panel > .info > p {font-weight: 600;margin-bottom: 9px;margin-top: 12px;}
+.content .custom_form{}
+.content .custom_form .form-group{width:100%;}
+.content .custom_form .element_left{float:left; width:65%;}
+.content .custom_form .element_left .select2-container{}
+.content .custom_form .element_right{float:right; width:30%}
+.content .custom_form .select2-container .select2-selection--single .select2-selection__rendered{text-transform:capitalize;}
+
+.content .form_top{}
+.content .form_top .form_common{}
+.content .form_top .form_common .form_heading{}
+.content .form_top .form_common .form_heading h3{font-size: 15px;text-transform: capitalize; border-bottom:1px solid #ddd;padding-bottom:10px;float: left;width: 85%;}
+.content .form_top .form_common .form_heading .btn_blk{float: left;margin-top: 13px;margin-left: 10px;}
+.content .form_top .form_common .form_heading .btn_blk button{}
+.content .form_top .form_common .form_drop{margin-top: 12px;}
+.content .form_top .form_labels{clear:both;}
+.content .form_top .form_labels label{text-align: center;width: 70px;font-weight: normal;text-transform: capitalize;margin-top: 10px;}
+.content .form_top .form_labels label .iradio_minimal-blue{}
+
+.content .form_top .form_common .form_common_left{padding: 0px;}
+.content .form_top .form_common .form_common_right{}
+
+.box .custom_forms_details{margin-bottom:20px;}
+.content .form_top .checkbox_main{}
+.content .form_top .checkbox_main label{display: inline-block;float: left;width: 100%;text-align: left;line-height: 22px;margin-bottom: 0px;}
+.content .form_top .checkbox_main label .icheckbox_minimal-blue{margin-right: 7px;}
+
+.content .form_top .form_common .form_common_left .input_main{float: left;width: 75%;}
+.content .form_top .form_common .form_common_left .input_main input{margin-top: 13px; border-top:0px; border-left:0px; border-right:0px; text-transform:capitalize; font-size:16px;}
+
+.content .new_category{padding: 15px;display: inline-block;width: 100%;}
+.content .new_category button{float: right;width: auto;text-transform: capitalize;}
+
+.content .bottom_btns{background:none #ebebeb;}
+.content .bottom_btns ul{list-style-type: none;text-align: right;padding: 20px 0px;}
+.content .bottom_btns ul li{list-style-type:none;display:inline-block; margin:0px 5px;}
+.content .bottom_btns ul li button{float:left; display:inline-block;text-transform: capitalize;}
+
+.form-control::-moz-placeholder{color: #333;}
+.content .form_top .checkbox_main .btn_blk{float: left;margin-top: 13px;margin-left: 10px;}
+
+.content .form_top .checkbox_main .form-group label img{margin: 2px 3px 0px 0px;float: left;}
+.content .form_top .checkbox_main .form-group label input{color:#333; border:0px;line-height: normal;}
+
+.content .form_top .radio_style{}
+.content .form_top .radio_style label{}
+.content .form_top .radio_style label input{width: 70px;border: 0px;text-align: center;}
+.content .form_top .radio_style label img{}
+.content .form_top .radio_style h4{font-size: 14px;margin: 0px;line-height: normal;}
+
+
+
+/*03/08/2018*/
+.content .form_top .radio_style h4.radio_btm{background:url(../images/circle_icon.jpg) no-repeat center bottom;padding: 0px 0px 19px;}
+.content .form_top .checkbox_main .form-group label input.checkbox_left{background:url(../images/checkbox_img.jpg) no-repeat center left;padding-left: 22px;}
+.content .form_top .checkbox_main .form-group label input.circle_left{background:url(../images/circle_icon.jpg) no-repeat center left;padding-left: 22px;}
+/*03/08/2018*/
+
+
+
+
+@media only screen and (min-width : 320px) and (max-width : 480px) {
+.content .form_top .form_common .form_common_left {padding: 0px;float: left;width: 100%;}
+.content .form_common_right{padding:0px;}
+.content .form_common_right .form_drop .select2-container {width: 100% !important;}
+.content .custom_form .element_left .select2-container {width: 100% !important;}
+.content .custom_form .element_right {float: left;width: 100%;margin-top: 8px;}
+.content .form_top .form_common .form_heading h3{padding-bottom: 5px;width: auto;margin-bottom: 0px;width: 100%;}
+.content .form_top .form_common .form_heading .btn_blk{margin-left:0px; margin-bottom:10px;}
+.content .form_top .form_common .form_common_left .input_main{width: 65%;}
+.content .form_top .form_common .form_drop {margin-top: 12px;float: left;display: inline-block; width:100%;}
+.content .custom_form .element_left{width:100%;}
+.content .custom_form .form-group {width: 100%;float: left;}
+.content .form_top .form_common .form_common_right {float: left;width: 100%;padding: 0px;}
+.content .form_top .form_common .select2-container{width: 100% !important;}
+}
+
+
+@media only screen and (min-width : 360px) and (max-width : 640px) {
+}
+
+@media only screen and (min-width : 768px) and (max-width : 1024px) {
+.content .form_top .form_common .form_common_left .input_main{width: 78%;}
+.content .form_top .form_common .form_heading h3{width: 75%;}
+.content .custom_form .element_right{width: 33%;}
+}
+
+@media only screen and (min-width : 800px) and (max-width : 1280px) {
+}
+
+@media only screen and (min-width : 980px) and (max-width : 1280px) {
+}

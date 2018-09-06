@@ -1,0 +1,67 @@
+version: '2.1'
+services:
+  app:
+    build:
+      context: ./docker/app
+    image: cruise-survey/app:latest
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - .:/var/www/html:cached
+    networks:
+      - cruise-survey_net
+
+  redis:
+    build:
+      context: ./docker/redis
+    image: cruise-survey/redis:latest
+    volumes:
+      - cruise-survey_redisdata:/data
+    networks:
+      - cruise-survey_net
+
+  mysql:
+    build:
+      context: ./docker/mysql
+    image: cruise-survey/mysql:latest
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: cruise-survey
+      MYSQL_USER: homestead
+      MYSQL_PASSWORD: secret
+    volumes:
+      - cruise-survey_mysqldata:/var/lib/mysql
+    networks:
+      - cruise-survey_net
+
+  myphpadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+        - 8080:80
+    depends_on:
+    - mysql
+    environment:
+    - PMA_ARBITRARY=1
+    - PMA_HOST=mysql
+    - PMA_PORT=3306
+    networks:
+      - cruise-survey_net
+
+  node:
+    build:
+      context: ./docker/node
+    image: cruise-survey/node:latest
+    volumes:
+      - .:/var/www/html
+volumes:
+  cruise-survey_redisdata:
+    driver: local
+  cruise-survey_mysqldata:
+    driver: local
+
+networks:
+  cruise-survey_net:
+    driver: bridge
