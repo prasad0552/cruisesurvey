@@ -3,10 +3,10 @@ services:
   app:
     build:
       context: ./docker/app
-    image: cruise-survey/app:latest
+    image: varaprasadpudi/cruisesurvey:latest
     ports:
-      - 80:80
-      - 443:443
+      - 8000:80
+      - 4430:443
     volumes:
       - .:/var/www/html:cached
     networks:
@@ -26,7 +26,7 @@ services:
       context: ./docker/mysql
     image: cruise-survey/mysql:latest
     ports:
-      - 3306:3306
+      - 33060:3306
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: cruise-survey
@@ -40,7 +40,7 @@ services:
   myphpadmin:
     image: phpmyadmin/phpmyadmin
     ports:
-        - 8080:80
+        - 8088:80
     depends_on:
     - mysql
     environment:
