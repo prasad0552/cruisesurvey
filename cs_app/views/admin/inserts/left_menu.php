@@ -68,6 +68,8 @@
                   </ul>
             	</li>
                 <li class="<?php if($uri3 == 'manageLanguageValues') echo 'active'; ?>" ><a href="<?php echo admin_url('languages/manageLanguageValues'); ?>"><i class="fa fa-square"></i>Language Values</a></li>
+                
+                <li class="<?php if($uri3 == 'importTranslations') echo 'active'; ?>" ><a href="<?php echo admin_url('languages/importTranslations'); ?>"><i class="fa fa-square"></i>Translations Bulk Upload</a></li>
               </ul>  
               
                 
@@ -133,8 +135,19 @@
                     <li class="<?php if($uri3 == 'generateSurveyReports') echo 'active'; ?>" ><a href="<?php echo admin_url('reports/generateSurveyReports'); ?>"><i class="fa fa-square-o"></i>Survey Reports</a></li>
                   </ul>
            </li>
+           
+            <li class="treeview <?php if($uri2 == 'archive' && ($uri3 == "deleteVoyage")) echo 'active'; ?>">
+                  <a href="#">
+                    <i class="fa fa-archive"></i>
+                    <span>Archive</span>
+                    <i class="fa fa-angle-left pull-right"></i>
+                  </a>
+                  <ul class="treeview-menu">
+                    <li class="<?php if($uri2 == 'archive') echo 'active'; ?>" ><a href="<?php echo admin_url('archive'); ?>"><i class="fa fa-square-o"></i>View & Delete Voyage</a></li>
+                  </ul>
+           </li>
             
-            <li class="treeview <?php if($uri2 == 'settings') echo 'active'; ?>">
+            <li class="treeview <?php if($uri2 == 'settings' ||($uri2 == 'corporate' && $uri3 == 'dbSettings')) echo 'active'; ?>">
               <a href="#">
                 <i class="fa fa-gear"></i>
                 <span>Settings</span>
@@ -142,8 +155,20 @@
               </a>
               <ul class="treeview-menu">
               	<li class="<?php if($uri3 == 'general') echo 'active'; ?>" ><a href="<?php echo admin_url('settings/general'); ?>"><i class="fa fa-square-o"></i>General Settings</a></li>
+                <li class="<?php if($uri3 == 'dbSettings') echo 'active'; ?>" ><a href="<?php echo admin_url('corporate/dbSettings'); ?>"><i class="fa fa-square-o"></i>Corporate Office DB Settings</a></li>
               </ul>
             </li>
+            
+            <li class="treeview <?php if($uri2 == 'corporate' && ($uri3 == "transferVoyageData")) echo 'active'; ?>">
+                  <a href="#">
+                    <i class="fa fa-copy"></i>
+                    <span>Corporate Office</span>
+                    <i class="fa fa-angle-left pull-right"></i>
+                  </a>
+                  <ul class="treeview-menu">
+                    <li class="<?php if($uri2 == 'corporate') echo 'active'; ?>" ><a href="<?php echo admin_url('corporate/transferVoyageData'); ?>"><i class="fa fa-square-o"></i>Transfer Voyage Data</a></li>
+                  </ul>
+           </li>
             
 
           </ul>
