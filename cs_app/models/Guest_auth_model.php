@@ -52,7 +52,7 @@ class Guest_auth_model extends CI_Model {
 		if($result->num_rows()>0)
 		{
 			$row = $result->row();
-			$values = array ('guest_id'=>$row->guest_id,'guest_voyage_id'=>$row->voyage_id,'guest_email'=>$row->email,'guest_login_name'=>$row->login_name,'guest_lastname'=>$row->lastname,'guest_language'=>$row->language,'guest_logged_in'=>TRUE,'guest_info'=>$row); 
+			$values = array ('guest_id'=>$row->guest_id,'guest_voyage_id'=>$row->voyage_id,'guest_email'=>$row->email,'guest_lastname'=>$row->lastname,'guest_date_of_birth'=>$row->date_of_birth,'guest_language'=>$row->language,'guest_logged_in'=>TRUE,'guest_info'=>$row); 
 			$this->session->set_userdata($values);
 		}
 		
@@ -73,7 +73,7 @@ class Guest_auth_model extends CI_Model {
 	 function clearGuestSession()
 	 {
 	 
-	 	$array_items = array ('guest_id','guest_voyage_id','guest_email','guest_login_name','guest_language','guest_logged_in','guest_info');
+	 	$array_items = array ('guest_id','guest_voyage_id','guest_email','guest_lastname','guest_date_of_birth','guest_language','guest_logged_in','guest_info');
 	    $this->session->unset_userdata($array_items);
 		
 	 }//End of clearSession Function

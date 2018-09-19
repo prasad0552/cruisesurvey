@@ -89,7 +89,7 @@ $autoload['drivers'] = array();
 |
 |	$autoload['helper'] = array('url', 'file');
 */
-$autoload['helper'] = array('url', 'file', 'commonurl','general','auth','text', 'database', 'translate');
+$autoload['helper'] = array('url', 'file', 'commonurl','general','auth','text', 'database', 'translate', 'csv');
 
 /*
 | -------------------------------------------------------------------
@@ -132,4 +132,4 @@ $autoload['language'] = array();
 |
 |	$autoload['model'] = array('first_model' => 'first');
 */
-$autoload['model'] = array('admin/admin_auth_model', 'admin/admin_model', 'admin/languages_model', 'admin/settings_model', 'admin/locations_model', 'admin/voyage_model', 'admin/surveys_model', 'admin/guests_model', 'guest_auth_model', 'common_model');
+$autoload['model'] = array('admin/admin_auth_model', 'admin/admin_model', 'admin/languages_model', 'admin/settings_model', 'admin/locations_model', 'admin/voyage_model', 'admin/surveys_model', 'admin/guests_model', 'admin/co_settings_model', 'guest_auth_model', 'common_model');

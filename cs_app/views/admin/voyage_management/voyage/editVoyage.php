@@ -28,6 +28,15 @@
               
                 <div class="box-header with-border">
                   <h3 class="box-title">Edit Voyage</h3>
+                  <div class="box-tools pull-right">
+                  <?php if($voyage->status!='C') { ?>
+                    <a href="<?php echo admin_url('voyage/closeVoyage/'.$voyage->voyage_id); ?>" class="confirm btn btn-danger">Close Voyage</a>
+                  <?php } else { ?>  
+                  <div class="color-palette-set">
+                  	<div class="col-sm-10 bg-red-active color-palette"><span>Closed</span></div>
+                  </div>  
+                  <?php } ?>
+                  </div>
                 </div><!-- /.box-header -->
                 
                 <!-- form start -->
@@ -42,7 +51,7 @@
                          <div class="form-group">
                             <label for="question" class="col-sm-2 control-label">Voyage id</label>
                             <div class="col-sm-2">
-                            	<input type="text" disabled class="form-control validate[required]" id="voyage_id" name="voyage_id" value="<?php echo $voyage->voyage_id; ?>"> 
+                            	<input type="text" readonly class="form-control validate[required]" id="voyage_id" name="voyage_id" value="<?php echo $voyage->voyage_id; ?>"> 
                             </div>
                         </div>
                         
@@ -73,6 +82,11 @@
                                 <label class="col-sm-2">
                                   <input type="radio" class="validate[required]" <?php echo ($voyage->status=='D')?"checked":""; ?> value="D" id="status" name="status">
                                   Disabled
+                                </label>
+                                
+                                 <label class="col-sm-2">
+                                  <input type="radio" class="validate[required]" <?php echo ($voyage->status=='C')?"checked":""; ?> value="C" id="status" name="status">
+                                  Closed
                                 </label>
                                 
                                 </div>
@@ -117,12 +131,24 @@
 <script type="text/javascript">
 $(function () {
 $('#start_date,#end_date').datetimepicker({
+	useCurrent: false,
 	format: 'DD-MM-YYYY'
 });
 $('#start_date').datetimepicker().on('dp.change', function (e) {
-	var incrementDay = moment(new Date(e.date));
-	incrementDay.add(1, 'days');
-	$('#end_date').data('DateTimePicker').minDate(incrementDay);
+	var min_date = moment(new Date(e.date)).format('DD-MM-YYYY');
+	$('#end_date').data('DateTimePicker').minDate(min_date);
+	$('#end_date').val(min_date);
+	$(this).data("DateTimePicker").hide();
+});
+
+$('#end_date').datetimepicker().on('dp.change', function (e) {
+	var start_date = $("#start_date").val();
+	var max_date = moment(new Date(e.date)).format('DD-MM-YYYY');
+	
+	if(max_date != moment().format('DD-MM-YYYY'))
+	{
+		$('#start_date').data('DateTimePicker').maxDate(max_date);	
+	}
 	$(this).data("DateTimePicker").hide();
 });
 

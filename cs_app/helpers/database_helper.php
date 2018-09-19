@@ -26,10 +26,12 @@ if ( ! function_exists('isActiveVoyage'))
 		}
 		
 		$CI 	=& get_instance();
-		$CI->load->model('admin/voyage_model',TRUE);	
+		$CI->load->model('admin/voyage_model',TRUE);
+		
+		$current_date = strtotime(date('Y-m-d'));	
 		
 		$active_voyage = $CI->voyage_model->getVoyageById($active_voyage_id);
-		return (isset($active_voyage->status) && $active_voyage->status == "A")? TRUE: FALSE;
+		return (isset($active_voyage->status) && $active_voyage->status == "A" && $active_voyage->end_date >= $current_date)? TRUE: FALSE;
 	}
 }
 
@@ -123,6 +125,26 @@ if ( ! function_exists('getLanguageName'))
 
 		if($language->language_name != "")
 			return $language->language_name;
+		else
+			return "";	
+	}
+}
+
+if ( ! function_exists('getQuestionCategoryName'))
+{
+	function getQuestionCategoryName($category_id)
+	{		
+		
+		if(empty($category_id))
+			return "";
+				
+		$CI 	=& get_instance();
+		$CI->load->model('admin/surveys_model',TRUE);	
+		
+		$question_category = $CI->surveys_model->getQuestionCategoryByID($category_id);
+
+		if($question_category->category != "")
+			return $question_category->category;
 		else
 			return "";	
 	}

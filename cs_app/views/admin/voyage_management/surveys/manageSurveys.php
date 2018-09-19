@@ -41,7 +41,7 @@
                       <tr>
                         <td><?php echo $survey->survey_id; ?></td>
                         <td><?php echo $survey->survey_title; ?></td>
-                        <td><?php echo ($survey->status == "A")?"Active":"Disabled"; ?></td>
+                        <td><?php if($survey->status == "A") echo "Active"; elseif($survey->status == "D") echo "Disabled"; else echo "Closed"; ?></td>
                         <td>
                         <div class="btn-group">
                           <button type="button" class="btn btn-info">Actions</button>

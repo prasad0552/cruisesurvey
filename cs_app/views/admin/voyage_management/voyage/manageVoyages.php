@@ -24,7 +24,7 @@
                   <h3 class="box-title">Voyage</h3>
                 </div><!-- /.box-header -->
                 <div class="box-body">
-                  <table id="manage_voyages" class="data-table table table-bordered table-striped data-table-responsive" width="100%" cellspacing="0" data-order="[[0, 'desc']]">
+                  <table id="manage_voyages" class="data-table table table-bordered table-striped data-table-responsive" width="100%" cellspacing="0">
                     <thead>
                       <tr>
                         <th data-priority = "1">Voyage ID</th>
@@ -50,7 +50,7 @@
                         <td><?php echo getDateFormat($voyage->end_date); ?></td>
                         <td><a href="<?php echo admin_url('guests/manageGuests/'.$voyage->voyage_id); ?>" class="btn btn-success"><i class="fa fa-user"></i> View Guests</a></td>
                         <td><a href="<?php echo admin_url('surveys/manageSurveys/'.$voyage->voyage_id); ?>" class="btn btn-primary"><i class="fa fa-check"></i> View Surveys</a></td>
-                        <td><?php echo ($voyage->status == "A")?"Active":"Disabled"; ?></td>
+                        <td><?php if($voyage->status == "A") echo "Active"; elseif($voyage->status == "D") echo "Disabled"; else echo "Closed"; ?></td>
                         <td>
                         	<div class="btn-group">
                               <button type="button" class="btn btn-info">Actions</button>

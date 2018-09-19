@@ -1,6 +1,3 @@
-<!-- TimePicker -->
-<link rel="stylesheet" href="<?php echo common_assets_url(); ?>/bootstrap-datetime-picker/css/bootstrap-datetimepicker.min.css">    
-
 <div class="content-wrapper">
 
 <section class="content">
@@ -13,7 +10,7 @@
     <div class="box-header with-border">
         <h3 class="box-title"></h3>
     	<div class="box-tools pull-right">
-    		<a href="<?php echo admin_url('voyage/manageVoyages'); ?>" class="btn btn-info">Manage Voyage</a>
+    		<a href="<?php echo admin_url('admins/manageCountries'); ?>" class="btn btn-info">Manage Countries</a>
     	</div>
     </div><!-- /.box-header -->
     
@@ -25,11 +22,11 @@
               <div class="box box-info">
               
                 <div class="box-header with-border">
-                  <h3 class="box-title">Create Voyage</h3>
+                  <h3 class="box-title">Add Country</h3>
                 </div><!-- /.box-header -->
                 
                 <!-- form start -->
-                <form class="form-horizontal" id="add_voyage" name="add_voyage" method="post">
+                <form class="form-horizontal" id="add_country" name="add_country" method="post">
                 
 
                     <div class="box-body">
@@ -38,16 +35,16 @@
         				<div class="col-md-10">
                         
                         <div class="form-group">
-                            <label for="question" class="col-sm-2 control-label">Start date</label>
-                            <div class="col-sm-2">
-                            	<input type="text" class="form-control validate[required]" id="start_date" name="start_date"> 
+                            <label for="question" class="col-sm-2 control-label">Country Code</label>
+                            <div class="col-sm-10">
+                            	<input type="text" class="form-control validate[required]" id="country_code" name="country_code"> 
                             </div>
                         </div>
                         
-                        <div class="form-group">
-                            <label for="question" class="col-sm-2 control-label">End date</label>
-                            <div class="col-sm-2">
-                            	<input type="text" class="form-control validate[required]" id="end_date" name="end_date"> 
+                    	<div class="form-group">
+                            <label for="question" class="col-sm-2 control-label">Country</label>
+                            <div class="col-sm-10">
+                            	<input type="text" class="form-control validate[required]" id="country_name" name="country_name"> 
                             </div>
                         </div>
                         
@@ -92,7 +89,7 @@
             
 	<div class="box-footer">
              
-             You can create voyage here
+             You can add country here
 	</div>
             
 </div><!-- /.box -->
@@ -100,32 +97,3 @@
 </section><!-- /.content -->
 
 </div>
-<script src="<?php echo common_assets_url(); ?>/bootstrap-datetime-picker/js/moment.js"></script>
-<script src="<?php echo common_assets_url(); ?>/bootstrap-datetime-picker/js/bootstrap-datetimepicker.min.js"></script>
-<script type="text/javascript">
-$(function () {
-$('#start_date,#end_date').datetimepicker({
-	useCurrent: false,
-	minDate: moment(),
-	format: 'DD-MM-YYYY'
-});
-$('#start_date').datetimepicker().on('dp.change', function (e) {
-	var min_date = moment(new Date(e.date)).format('DD-MM-YYYY');
-	$('#end_date').data('DateTimePicker').minDate(min_date);
-	$('#end_date').val(min_date);
-	$(this).data("DateTimePicker").hide();
-});
-
-$('#end_date').datetimepicker().on('dp.change', function (e) {
-	var start_date = $("#start_date").val();
-	var max_date = moment(new Date(e.date)).format('DD-MM-YYYY');
-	
-	if(max_date != moment().format('DD-MM-YYYY'))
-	{
-		$('#start_date').data('DateTimePicker').maxDate(max_date);	
-	}
-	$(this).data("DateTimePicker").hide();
-});
-
-});
-</script>

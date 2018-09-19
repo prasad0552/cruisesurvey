@@ -795,12 +795,13 @@ class Surveys extends CI_Controller {
 			redirect_admin('voyage/manageVoayges');	
 		}	
 		
-		//Check Voyage exist or not
-		$condition = array('voyage_id' => $voyage_id);
+		//Check voyage exists and not closed
+		$condition = array('voyage_id' => $voyage_id, 'status !=' => 'C');
 		$check_voyage_exists = $this->voyage_model->checkVoyageExists($condition);	
 		if($check_voyage_exists == 0)
 		{
-			redirect('admin_access_denied');
+			$this->session->set_flashdata('flash_message', $this->admin_model->flash_message('error','Sorry you can not add survey. Voyage closed.'));
+			redirect_admin('surveys/manageSurveys/'.$voyage_id);
 		}			
 
 		if($this->input->post())
@@ -915,7 +916,16 @@ class Surveys extends CI_Controller {
 		
 		if($this->input->post('update_general'))
 		{
-		
+				
+				//Check voyage exists and not closed
+				$condition = array('voyage_id' => $voyage_id, 'status !=' => 'C');
+				$check_voyage_exists = $this->voyage_model->checkVoyageExists($condition);	
+				if($check_voyage_exists == 0)
+				{
+					$this->session->set_flashdata('flash_message', $this->admin_model->flash_message('error','Sorry you can not edit. Voyage closed.'));
+					redirect_admin('surveys/editSurvey/'.$voyage_id.'/'.$survey_id);
+				}
+			
 				//Check the survey published or not
 				$params = array('voyage_id' => $voyage_id, 'survey_id' => $survey_id, 'per_page' => 1);
 				$survey_report_check = $this->surveys_model->getGuestSurveyReports($params);		
@@ -1001,6 +1011,24 @@ class Surveys extends CI_Controller {
 				$voyage_id = $this->input->post('voyage_id');
 				$survey_id = $this->input->post('survey_id');
 				
+				//Check voyage exists and not closed
+				$condition = array('voyage_id' => $voyage_id, 'status !=' => 'C');
+				$check_voyage_exists = $this->voyage_model->checkVoyageExists($condition);	
+				if($check_voyage_exists == 0)
+				{
+					$this->session->set_flashdata('flash_message', $this->admin_model->flash_message('error','Sorry you can not edit. Voyage closed.'));
+					redirect_admin('surveys/editSurvey/'.$voyage_id.'/'.$survey_id);
+				}
+				
+				//Check voyage exists and not closed
+				$condition = array('voyage_id' => $voyage_id, 'survey_id' => $survey_id, 'status !=' => 'C');
+				$check_voyage_exists = $this->surveys_model->checkSurveyExists($condition);	
+				if($check_voyage_exists == 0)
+				{
+					$this->session->set_flashdata('flash_message', $this->admin_model->flash_message('error','Sorry you can not edit. Survey closed.'));
+					redirect_admin('surveys/editSurvey/'.$voyage_id.'/'.$survey_id);
+				}
+				
 				//Check the survey published or not
 				$params = array('voyage_id' => $voyage_id, 'survey_id' => $survey_id, 'per_page' => 1);
 				$survey_report_check = $this->surveys_model->getGuestSurveyReports($params);		
@@ -1041,7 +1069,6 @@ class Surveys extends CI_Controller {
 										'voyage_id' => $voyage_id,
 										'survey_id' => $survey_id,
 										'section_id' => $section_id,
-										'section_numeric_id' => $section_count,
 										'section_numeric_id' => $section_count,
 										'category_id' => $section['category_id'],
 										'category' => $question_category->category,
@@ -1146,7 +1173,7 @@ class Surveys extends CI_Controller {
 		//Check the survey has questions
 		$params = array('survey_id' => $survey_id);
 		$survey_sections = $this->surveys_model->getSurveySections($params);
-		if($survey_sections->num_rows() == 0)
+		if($survey_sections->num_rows() == 0 && $survey->status != "C")
 		{
 			$this->outputData['get_default_questions'] = $get_default_questions = "Y";
 		}
@@ -1266,6 +1293,24 @@ class Surveys extends CI_Controller {
 		if(!isAuthorizedAdmin('manage_surveys'))
 			redirect('admin_access_denied');
 		
+		//Check voyage exists and not closed
+		$condition = array('voyage_id' => $voyage_id, 'status !=' => 'C');
+		$check_voyage_exists = $this->voyage_model->checkVoyageExists($condition);	
+		if($check_voyage_exists == 0)
+		{
+			$this->session->set_flashdata('flash_message', $this->admin_model->flash_message('error','Sorry you can not delete. Voyage closed.'));
+			redirect_admin('surveys/manageSurveys/'.$voyage_id);
+		}
+		
+		//Check voyage exists and not closed
+		$condition = array('voyage_id' => $voyage_id, 'survey_id' => $survey_id, 'status !=' => 'C');
+		$check_voyage_exists = $this->surveys_model->checkSurveyExists($condition);	
+		if($check_voyage_exists == 0)
+		{
+			$this->session->set_flashdata('flash_message', $this->admin_model->flash_message('error','Sorry you can not delete. Survey closed.'));
+			redirect_admin('surveys/manageSurveys/'.$voyage_id);
+		}
+		
 		//Check survey exists or not
 		$condition = array('voyage_id' => $voyage_id,'survey_id' => $survey_id);
 		$check_survey_exists = $this->surveys_model->checkSurveyExists($condition);	
@@ -1287,6 +1332,8 @@ class Surveys extends CI_Controller {
 			'survey_id'	=>	$survey_id
 		);
 		
+		unlink(FCPATH. 'images/surveys/'.$survey->voyage_id.'/'.$survey->survey_image);	
+		
 		$this->surveys_model->deleteSurvey($condition);
 		
 		$this->surveys_model->deleteGuestSurveyComment($condition);
@@ -1295,6 +1342,49 @@ class Surveys extends CI_Controller {
 		
 		$this->session->set_flashdata('flash_message', $this->admin_model->flash_message('success','Survey was deleted successfully.'));
 		redirect_admin('surveys/manageSurveys/'.$voyage_id);
+	}
+	
+	function closeSurvey($voyage_id,$survey_id)
+	{
+		if(!isAdmin())
+			redirect_admin('login');
+		
+		if(!isAuthorizedAdmin('manage_surveys'))
+			redirect('admin_access_denied');
+		
+		if(empty($voyage_id))
+		{
+			$this->session->set_flashdata('flash_message', $this->admin_model->flash_message('error','Invalid Voyage Id.'));
+			redirect_admin('voyage/manageVoyages');	
+		}		
+			
+		if(empty($survey_id))
+		{
+			$this->session->set_flashdata('flash_message', $this->admin_model->flash_message('error','Invalid Survey Id'));
+			redirect_admin('surveys/manageSurveys/'.$voyage_id);	
+		}
+		
+		//Check survey exists or not
+		$condition = array('voyage_id' => $voyage_id,'survey_id' => $survey_id);
+		$check_survey_exists = $this->surveys_model->checkSurveyExists($condition);	
+		if($check_survey_exists == 0)
+		{
+			redirect('admin_access_denied');
+		}	
+		
+		$update_data=array(
+			'status' => "C",
+			'updated_at' => strtotime(date('Y-m-d H:i:s'))
+		);
+		
+		$update_cond=array(
+			'survey_id'	=>	$survey_id
+		);
+			
+		$this->surveys_model->updateSurvey($update_data,$update_cond);
+		
+		$this->session->set_flashdata('flash_message', $this->admin_model->flash_message('success','Survey '.$survey_id.' closed.'));
+		redirect_admin('surveys/editSurvey/'.$voyage_id.'/'.$survey_id);
 	}
 	
 	function ajaxDeleteSurveyFile()

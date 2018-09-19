@@ -194,6 +194,15 @@ class Voyage extends CI_Controller {
 		if($check_voyage_exists == 0)
 		{
 			redirect('admin_access_denied');
+		}
+		
+		//Check voyage exists and not closed
+		$condition = array('voyage_id' => $voyage_id, 'status !=' => 'C');
+		$check_voyage_exists = $this->voyage_model->checkVoyageExists($condition);	
+		if($check_voyage_exists == 0)
+		{
+			$this->session->set_flashdata('flash_message', $this->admin_model->flash_message('error','Sorry you can not delete. Voyage closed.'));
+			redirect_admin('voyage/manageVoyages');
 		}		
 			
 		$params['voyage_id'] = $voyage_id;
@@ -213,6 +222,9 @@ class Voyage extends CI_Controller {
 			$this->session->set_flashdata('flash_message', $this->admin_model->flash_message('error','Please delete the surveys of this voyage before deleting this.'));
 			redirect_admin('voyage/manageVoyages');
 		}
+		
+		$clean_folder = FCPATH. 'images/surveys/'.$voyage_id.'/';
+		$this->remove_directory($clean_folder);
 			
 		$condition = array(
 			'voyage_id'	=>	$voyage_id
@@ -221,6 +233,52 @@ class Voyage extends CI_Controller {
 		$this->voyage_model->deleteVoyage($condition);
 		$this->session->set_flashdata('flash_message', $this->admin_model->flash_message('success','Voyage was deleted successfully.'));
 		redirect_admin('voyage/manageVoyages');
+	}
+	
+	function closeVoyage($voyage_id)
+	{
+		if(!isAdmin())
+			redirect_admin('login');
+		
+		if(!isAuthorizedAdmin('manage_voyages'))
+			redirect('admin_access_denied');
+			
+		$general_setting = getGeneralSettings();
+		$cruise_code = $general_setting->cruise_code;
+		if(empty($general_setting->cruise_code))
+		{
+			$this->session->set_flashdata('flash_message', $this->admin_model->flash_message('error','Cruise Code is empty please add it in settings page'));
+			redirect_admin('voyage/manageVoyages');
+		}		
+			
+		if(empty($voyage_id))
+		{
+			$this->session->set_flashdata('flash_message', $this->admin_model->flash_message('error','Invalid Voyage.'));
+			redirect_admin('voyage/manageVoyages');	
+		}
+		
+		//Check Voyage exists or not
+		$condition = array('voyage_id' => $voyage_id);
+		$check_voyage_exists = $this->voyage_model->checkVoyageExists($condition);	
+		if($check_voyage_exists == 0)
+		{
+			redirect('admin_access_denied');
+		}
+		
+		$update_data=array(
+			'status' => "C",
+			'updated_at' => strtotime(date('Y-m-d H:i:s'))
+		);
+		
+		$update_cond=array(
+			'voyage_id'	=>	$voyage_id
+		);
+			
+		$this->voyage_model->updateVoyage($update_data,$update_cond);
+		
+		$this->session->set_flashdata('flash_message', $this->admin_model->flash_message('success','Voyage '.$voyage_id.' closed.'));
+		redirect_admin('voyage/editVoyage/'.$voyage_id);
+		
 	}
 	
 	function updateVoyageStatus()
@@ -260,6 +318,32 @@ class Voyage extends CI_Controller {
 		
 		echo json_encode($data);
 		exit;
+	}
+	
+	//Function removing directory & files
+	function remove_directory($dir) { 
+
+	  if(!empty($dir) && glob($dir . '/*') != "" )
+	  { 	
+		  foreach(glob($dir . '/*') as $file) { 
+			if(is_dir($file)) $this->remove_directory($file); else unlink($file); 
+		  } 
+		  $Files = get_dir_file_info($dir); 
+		  if((empty($Files) || $Files == "") && file_exists($dir))
+		  {
+		  	rmdir($dir); 
+		  }	 
+	  }
+	}
+	
+	function remove_files($dir) { 
+
+	  if(!empty($dir) && glob($dir . '/*') != "" )
+	  { 	
+		  foreach(glob($dir . '/*') as $file) { 
+			if(is_dir($file)) $this->remove_directory($file); else unlink($file); 
+		  }  
+	  }
 	}
 	
 }

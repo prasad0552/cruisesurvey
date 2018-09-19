@@ -62,29 +62,22 @@ class Guests extends CI_Controller {
 			redirect_admin('voyage/manageVoayges');	
 		}
 		
-		//Check Voyage exist or not
-		$condition = array('voyage_id' => $voyage_id);
+		//Check voyage exists and not closed
+		$condition = array('voyage_id' => $voyage_id,'status !=' => 'C');
 		$check_voyage_exists = $this->voyage_model->checkVoyageExists($condition);	
 		if($check_voyage_exists == 0)
 		{
-			redirect('admin_access_denied');
+			$this->session->set_flashdata('flash_message', $this->admin_model->flash_message('error','Sorry you can not add guest. Voyage closed.'));
+			redirect_admin('guests/manageGuests/'.$voyage_id);
 		}	
 
 		if($this->input->post())
-		{
-				//Find login name
-				$lastname 		= $this->input->post('lastname');
-				$date_of_birth	= $this->input->post('date_of_birth');
-				
-				$dob = explode("-",$date_of_birth);
-				$dob1= $dob[2].$dob[1].$dob[0];
-				
-				$login_name = $lastname.$dob1;
-				
+		{				
 				//Check the guest already exists or not
 				$condition=array(
 					'voyage_id'	=> $voyage_id,
-					'login_name'=> $login_name
+					'lastname' => $this->input->post('lastname'),
+					'date_of_birth' => $this->input->post('date_of_birth')
 				);
 			
 				$check_guest_exist = $this->guests_model->checkGuestExists($condition);
@@ -115,11 +108,11 @@ class Guests extends CI_Controller {
 				$guest_password_scheme = $general_setting->guest_password_scheme;
 				if($guest_password_scheme == "FCI")
 				{
-					$password = $login_name.$this->input->post('passenger_no');	
+					$password = $this->input->post('passenger_no');	
 				}
 				else
 				{
-					$password = $login_name.getRandomString(8);
+					$password = getRandomString(8);
 				}
 							
 				$insert_data=array(
@@ -127,15 +120,15 @@ class Guests extends CI_Controller {
 					'guest_numeric_id' => $guest_numeric_id,
 					'voyage_id'	=> $voyage_id,
 					'firstname' => $this->input->post('firstname'),
-					'lastname'	=> $lastname,
+					'lastname'	=> $this->input->post('lastname'),
 					'email'	=> $this->input->post('email'),
-					'login_name'=> strtolower($login_name),	
 					'password' => $password,
-					'date_of_birth' => $date_of_birth,
+					'date_of_birth' => $this->input->post('date_of_birth'),
 					'sex'	=> $this->input->post('sex'),
 					'nationality' => $this->input->post('nationality'),
 					'language' => $this->input->post('language'),
 					'passenger_no' => $this->input->post('passenger_no'),
+					'opt_out_electronic' => ($this->input->post('opt_out_electronic'))?$this->input->post('opt_out_electronic'):"N",
 					'status' => $this->input->post('status'),
 					'created_at' => strtotime(date('Y-m-d H:i:s'))
 				);
@@ -184,20 +177,21 @@ class Guests extends CI_Controller {
 
 		if($this->input->post())
 		{
-				//Find login name
-				$lastname 		= $this->input->post('lastname');
-				$date_of_birth	= $this->input->post('date_of_birth');
-				
-				$dob = explode("-",$date_of_birth);
-				$dob1= $dob[2].$dob[1].$dob[0];
-				
-				$login_name = $lastname.$dob1;
-				
+				//Check voyage exists and not closed
+				$condition = array('voyage_id' => $voyage_id,'status !=' => 'C');
+				$check_voyage_exists = $this->voyage_model->checkVoyageExists($condition);	
+				if($check_voyage_exists == 0)
+				{
+					$this->session->set_flashdata('flash_message', $this->admin_model->flash_message('error','Sorry you can not edit guest. Voyage closed.'));
+					redirect_admin('guests/editGuest/'.$voyage_id.'/'.$guest_id);
+				}
+									
 				//Check the guest already exists or not
 				$condition=array(
 					'voyage_id'	=> $voyage_id,
 					'guest_id !=' => $guest_id,
-					'login_name'=> $login_name
+					'lastname' => $this->input->post('lastname'),
+					'date_of_birth' => $this->input->post('date_of_birth')
 				);
 			
 				$check_guest_exist = $this->guests_model->checkGuestExists($condition);
@@ -210,14 +204,14 @@ class Guests extends CI_Controller {
 				
 				$update_data=array(
 					'firstname' => $this->input->post('firstname'),
-					'lastname'	=> $lastname,
+					'lastname'	=> $this->input->post('lastname'),
 					'email'	=> $this->input->post('email'),
-					'login_name'=> strtolower($login_name),	
-					'date_of_birth' => $date_of_birth,
+					'date_of_birth' => $this->input->post('date_of_birth'),
 					'sex'	=> $this->input->post('sex'),
 					'nationality' => $this->input->post('nationality'),
 					'language' => $this->input->post('language'),
 					'passenger_no' => $this->input->post('passenger_no'),
+					'opt_out_electronic' => ($this->input->post('opt_out_electronic'))?$this->input->post('opt_out_electronic'):"N",
 					'status' => $this->input->post('status'),
 					'updated_at' => strtotime(date('Y-m-d H:i:s'))
 				);
@@ -227,7 +221,7 @@ class Guests extends CI_Controller {
 				$guest_password_scheme = $general_setting->guest_password_scheme;
 				if($guest_password_scheme == "FCI")
 				{
-					$update_data['password'] = $login_name.$this->input->post('passenger_no');	
+					//$update_data['password'] = $this->input->post('passenger_no');	
 				}
 							
 				$update_cond=array(
@@ -261,12 +255,13 @@ class Guests extends CI_Controller {
 			redirect_admin('voyage/manageVoayges');	
 		}	
 		
-		//Check Voyage exist or not
-		$condition = array('voyage_id' => $voyage_id);
+		//Check voyage exists and not closed
+		$condition = array('voyage_id' => $voyage_id, 'status !=' => 'C');
 		$check_voyage_exists = $this->voyage_model->checkVoyageExists($condition);	
 		if($check_voyage_exists == 0)
 		{
-			redirect('admin_access_denied');
+			$this->session->set_flashdata('flash_message', $this->admin_model->flash_message('error','Sorry you can not add guest. Voyage closed.'));
+			redirect_admin('guests/manageGuests/'.$voyage_id);
 		}	
 		
 		if($this->input->post('import'))
@@ -301,22 +296,14 @@ class Guests extends CI_Controller {
 			{
 			
 				if(!empty($result['lastname']) && !empty($result['date_of_birth']) && !empty($result['passenger_no']))
-				{
-					//Find login name
-					$lastname 		= $result['lastname'];
-					$date_of_birth	= $result['date_of_birth'];
-					
-					$dob = explode("-",$date_of_birth);
-					$dob1= $dob[2].$dob[1].$dob[0];
-					
-					$login_name = $lastname.$dob1;
-					
+				{	
 					//Check the guest already exists or not
 					$condition=array(
 						'voyage_id'	=> $voyage_id,
-						'login_name'=> $login_name
+						'lastname' => $result['lastname'],
+						'date_of_birth' => $result['date_of_birth']
 					);
-				
+
 					$check_guest_exist = $this->guests_model->checkImportGuestExists($condition);
 						
 					if($check_guest_exist->num_rows() == 0)
@@ -329,11 +316,11 @@ class Guests extends CI_Controller {
 						$guest_password_scheme = $general_setting->guest_password_scheme;
 						if($guest_password_scheme == "FCI")
 						{
-							$password = $login_name.$result['passenger_no'];	
+							$password = $result['passenger_no'];	
 						}
 						else
 						{
-							$password = $login_name.getRandomString(8);
+							$password = getRandomString(8);
 						}
 						
 						$insert_data=array(
@@ -343,9 +330,8 @@ class Guests extends CI_Controller {
 							'firstname' => $result['firstname'],
 							'lastname'	=> $result['lastname'],
 							'email'	=> (is_valid_email($result['email']))?$result['email']:"",
-							'login_name'=> strtolower($login_name),	
 							'password' => $password,
-							'date_of_birth' => $date_of_birth,
+							'date_of_birth' => $result['date_of_birth'],
 							'sex'	=> $result['sex'],
 							'nationality' => $result['nationality'],
 							'language' => strtolower($result['language']),
@@ -360,6 +346,7 @@ class Guests extends CI_Controller {
 							'passport_no' => $result['passport_no'],
 							'passport_expire' => getTimeStamp($result['passport_expire']),
 							'passport_issued' => getTimeStamp($result['passport_issued']),
+							'opt_out_electronic' => ($result['opt_out_electronic'])?"Y":"N",
 							'status' => 'A',
 							'created_at' => strtotime(date('Y-m-d H:i:s'))
 						);
@@ -425,6 +412,15 @@ class Guests extends CI_Controller {
 		if(!isAuthorizedAdmin('manage_guests'))
 			redirect('admin_access_denied');
 		
+		//Check voyage exists and not closed
+		$condition = array('voyage_id' => $voyage_id, 'status !=' => 'C');
+		$check_voyage_exists = $this->voyage_model->checkVoyageExists($condition);	
+		if($check_voyage_exists == 0)
+		{
+			$this->session->set_flashdata('flash_message', $this->admin_model->flash_message('error','Sorry you can not delete. Voyage closed.'));
+			redirect_admin('guests/manageGuests/'.$voyage_id);
+		}		
+		
 		//Check Guest exist or not
 		$condition = array('voyage_id' => $voyage_id, 'guest_id' => $guest_id);
 		$check_guest_exists = $this->guests_model->checkGuestExists($condition);	
@@ -450,6 +446,15 @@ class Guests extends CI_Controller {
 		
 		if(!isAuthorizedAdmin('manage_guests'))
 			redirect('admin_access_denied');
+			
+		//Check voyage exists and not closed
+		$condition = array('voyage_id' => $voyage_id, 'status !=' => 'C');
+		$check_voyage_exists = $this->voyage_model->checkVoyageExists($condition);	
+		if($check_voyage_exists == 0)
+		{
+			$this->session->set_flashdata('flash_message', $this->admin_model->flash_message('error','Sorry you can not delete. Voyage closed.'));
+			redirect_admin('guests/manageGuests/'.$voyage_id);
+		}		
 		
 		//Check Guest exist or not
 		$condition = array('voyage_id' => $voyage_id);

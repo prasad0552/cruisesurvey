@@ -23,13 +23,14 @@ class Guests extends CI_Controller {
 		if($this->input->post())
 		{
 			
-			$login_name = $this->input->post('login_name');
+			$lastname = strtolower($this->input->post('lastname'));
 			$password = $this->input->post('password');
+			$date_of_birth = $this->input->post('date_of_birth');
 			
 			
 			$active_voyage_id = getActiveVoyageId();
 				
-			$conditions = array('voyage_id' => $active_voyage_id, 'login_name'=>$login_name,'password'=>$password,'status'=>'A');
+			$conditions = array('voyage_id' => $active_voyage_id, 'LOWER(lastname)'=>$lastname, 'date_of_birth' => $date_of_birth, 'password'=>$password,'opt_out_electronic' =>"N",'status'=>'A');
 				
 			if($this->guest_auth_model->loginAsGuest($conditions))
 			{

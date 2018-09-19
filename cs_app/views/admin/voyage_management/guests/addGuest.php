@@ -62,7 +62,7 @@
                         <div class="form-group">
                             <label for="question" class="col-sm-2 control-label">Email</label>
                             <div class="col-sm-4">
-                            	<input type="text" class="form-control validate[required,custom[email]]" id="email" name="email"> 
+                            	<input type="text" class="form-control validate[custom[email]]" id="email" name="email"> 
                             </div>
                         </div>
                         
@@ -120,6 +120,17 @@
                                 	<option value="<?php echo $country->country_code; ?>"><?php echo $country->country_name; ?></option>
                                 <?php } ?>
                                 </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="question" class="col-sm-2 control-label">Opt Out Electronic</label>
+                            <div class="col-sm-4">
+                            	<div class="checkbox">
+                                <label>
+                                	<input type="checkbox" id="opt_out_electronic"  name="opt_out_electronic" value="Y">
+                                </label>
+                                </div>
                             </div>
                         </div>
                         

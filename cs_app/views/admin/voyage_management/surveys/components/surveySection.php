@@ -1,11 +1,11 @@
-<div class="box box-default survey-section-container" data-section-count="<?php echo $section_count; ?>">
+<div class="box box-default survey-section-container <?php echo ($section_count != 1)?"collapsed-box":""; ?>" data-section-count="<?php echo $section_count; ?>">
     <div class="box-header with-border">
-        <h3 class="box-title survey-section">Section <?php echo $section_count; ?></h3>
+        <h3 class="box-title survey-section"><?php echo getQuestionCategoryName($section['category_id']); ?></h3>
         <input class="survey-section-status" type="hidden" id="section_status_<?php echo $section_count; ?>" name="sections[<?php echo $section_count; ?>][status]" value="<?php echo $section['status']; ?>" />
         <div class="box-tools pull-right">
             <button type="button" class="btn btn-box-tool change-section-status" title="Change section status"><i class="fa <?php echo ($section['status']=="A")?"fa-toggle-on":"fa-toggle-off"; ?>"></i></button>
             <button type="button" class="btn btn-box-tool" data-widget="collapse" title="Minimize section" ><i class="fa fa-minus"></i></button>
-            <button type="button" class="btn btn-box-tool remove-section" title="Remove section"><i class="fa fa-remove"></i></button>
+            <button type="button" class="btn btn-box-tool remove-section" title="Remove section"><i class="fa fa-trash-o"></i></button>
         </div>
     </div>
     <!-- /.box-header -->

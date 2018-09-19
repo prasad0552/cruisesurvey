@@ -65,7 +65,7 @@ class Surveys extends CI_Controller {
 			redirect('guests/logout');
 		}
 		
-		if($survey == "" || $survey->voyage_id != $active_voyage_id || $survey->status == "D")
+		if($survey == "" || $survey->voyage_id != $active_voyage_id || $survey->status != "A")
 		{
 			$this->session->set_flashdata('flash_message', $this->common_model->flash_message('error',translate('survey-not-available')));
 			redirect('surveys');

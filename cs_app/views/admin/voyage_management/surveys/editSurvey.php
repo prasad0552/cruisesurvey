@@ -24,6 +24,15 @@
               
                 <div class="box-header with-border">
                   <h3 class="box-title">Edit Survey</h3>
+                  <div class="box-tools pull-right">
+                  <?php if($survey->status!='C') { ?>
+                    <a href="<?php echo admin_url('surveys/closeSurvey/'.$survey->voyage_id.'/'.$survey->survey_id); ?>" class="confirm btn btn-danger">Close Survey</a>
+                  <?php } else { ?>  
+                  <div class="color-palette-set">
+                  	<div class="col-sm-10 bg-red-active color-palette"><span>Closed</span></div>
+                  </div>  
+                  <?php } ?>
+                  </div>
                 </div><!-- /.box-header -->
                 
                  <div class="nav-tabs-custom">
@@ -99,6 +108,11 @@
                                     <label class="col-sm-2">
                                       <input type="radio" class="validate[required]" <?php echo ($survey->status=='D')?"checked":""; ?> value="D" id="status" name="status">
                                       Disabled
+                                    </label>
+                                    
+                                    <label class="col-sm-2">
+                                      <input type="radio" class="validate[required]" <?php echo ($survey->status=='C')?"checked":""; ?> value="C" id="status" name="status">
+                                      Closed
                                     </label>
                                     
                                     </div>

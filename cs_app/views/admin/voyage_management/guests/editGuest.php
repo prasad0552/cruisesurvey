@@ -53,13 +53,6 @@
                         </div>
                         
                          <div class="form-group">
-                            <label for="question" class="col-sm-2 control-label">Login Name</label>
-                            <div class="col-sm-4">
-                            	<input type="text" readonly class="form-control validate[required]" id="login_name" name="login_name" value="<?php echo $guest->login_name; ?>"> 
-                            </div>
-                        </div>
-                        
-                         <div class="form-group">
                             <label for="question" class="col-sm-2 control-label">Password</label>
                             <div class="col-sm-4">
                             	<input type="text" readonly class="form-control validate[required]" id="password" name="password" value="<?php echo $guest->password; ?>"> 
@@ -83,7 +76,7 @@
                         <div class="form-group">
                             <label for="question" class="col-sm-2 control-label">Email</label>
                             <div class="col-sm-4">
-                            	<input type="text" class="form-control validate[required,custom[email]]" id="email" name="email" value="<?php echo $guest->email; ?>"> 
+                            	<input type="text" class="form-control validate[custom[email]]" id="email" name="email" value="<?php echo $guest->email; ?>"> 
                             </div>
                         </div>
                         
@@ -141,6 +134,17 @@
                                 	<option value="<?php echo $country->country_code; ?>" <?php echo ($country->country_code == $guest->nationality)?"selected":""; ?> ><?php echo $country->country_name; ?></option>
                                 <?php } ?>
                                 </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="question" class="col-sm-2 control-label">Opt Out Electronic</label>
+                            <div class="col-sm-4">
+                            	<div class="checkbox">
+                                <label>
+                                	<input type="checkbox" id="opt_out_electronic"  name="opt_out_electronic" <?php echo ($guest->opt_out_electronic == "Y")?"checked":""; ?> value="Y">
+                                </label>
+                                </div>
                             </div>
                         </div>
                         

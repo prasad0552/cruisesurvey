@@ -1,10 +1,12 @@
 <?php
 
-class Voyage_model extends CI_Model {
+class Co_voyage_model extends CI_Model {
 	 
 	function __construct() 
 	{
         parent::__construct();
+		
+		$this->corporate_db = $this->load->database('corporate', TRUE);
     }
 	
   	//Check Voyage exists or not
@@ -12,8 +14,8 @@ class Voyage_model extends CI_Model {
 	{
 	  	if(is_array($condition) && count($condition) > 0 )
 		{
-			$this->db->where($condition);
-			$query=$this->db->get('voyage');
+			$this->corporate_db->where($condition);
+			$query=$this->corporate_db->get('voyage');
 			return $query->num_rows();
 		}
 	}
@@ -21,9 +23,9 @@ class Voyage_model extends CI_Model {
 	//Insert Voyage
 	function insertVoyage($insert_data)
 	{
-	  	$this->db->insert('voyage',$insert_data);
+	  	$this->corporate_db->insert('voyage',$insert_data);
 		
-		//$voyage_id = $this->db->query("SELECT voyage_id FROM ?:voyage ORDER BY created_at Desc Limit 1")->row()->voyage_id;
+		//$voyage_id = $this->corporate_db->query("SELECT voyage_id FROM ?:voyage ORDER BY created_at Desc Limit 1")->row()->voyage_id;
 		
 		//return $voyage_id;
 	}
@@ -102,7 +104,7 @@ class Voyage_model extends CI_Model {
 				$limit		= "LIMIT ".$offset.",".$per_page;
 			}
 	  	  
-	  		$result = $this->db->query("SELECT ".implode(',',$fields)." FROM ?:voyage ".$join." WHERE ".$condition." ".$order." ".$limit);
+	  		$result = $this->corporate_db->query("SELECT ".implode(',',$fields)." FROM ?:voyage ".$join." WHERE ".$condition." ".$order." ".$limit);
 			
 			return $result;
 			
@@ -121,7 +123,7 @@ class Voyage_model extends CI_Model {
 			
 			$condition .= " AND ?:voyage.voyage_id = '".$voyage_id."'";
 						
-	  		$result = $this->db->query("SELECT ".implode(',',$fields)." FROM ?:voyage ".$join." WHERE ".$condition);
+	  		$result = $this->corporate_db->query("SELECT ".implode(',',$fields)." FROM ?:voyage ".$join." WHERE ".$condition);
 			
 			return $result->row();
 	}
@@ -131,8 +133,8 @@ class Voyage_model extends CI_Model {
 	{
 	  	if(is_array($update_cond) && count($update_cond) >0 )
 		{
-			$this->db->where($update_cond);
-			$this->db->update('voyage',$update_data);
+			$this->corporate_db->where($update_cond);
+			$this->corporate_db->update('voyage',$update_data);
 		}
 	}
 	
@@ -141,11 +143,11 @@ class Voyage_model extends CI_Model {
 	{
 	  		if(count($conditions)>0)		
 	 		{
-				$this->db->where($conditions);
+				$this->corporate_db->where($conditions);
 			
-				$this->db->delete('voyage');
+				$this->corporate_db->delete('voyage');
 				
-				return $this->db->affected_rows();
+				return $this->corporate_db->affected_rows();
 			}	
 	}
 }

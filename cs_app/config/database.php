@@ -72,13 +72,65 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 $active_group = 'default';
 $query_builder = TRUE;
+$servername = 'localhost';
+$username = 'root';
+$password = '';
+$dbname = 'cruise_survey';
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'mysql',
-	'username' => 'homestead',
-	'password' => 'secret',
-	'database' => 'cruise-survey',
+	'hostname' => $servername,
+	'username' => $username,
+	'password' => $password,
+	'database' => $dbname ,
+	'dbdriver' => 'mysqli',
+	'dbprefix' => 'cs_',
+	'pconnect' => FALSE,
+	'db_debug' => (ENVIRONMENT !== 'production'),
+	'cache_on' => FALSE,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_general_ci',
+	'swap_pre' => '',
+	'encrypt' => FALSE,
+	'compress' => FALSE,
+	'stricton' => FALSE,
+	'failover' => array(),
+	'save_queries' => TRUE
+);
+
+
+//Connect remote Dateabse
+//Get corporate database settings
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+$hostname = $username = $password = $database_name = "";
+if (!$conn->connect_error) {
+
+$sql = "SELECT hostname, username, password, database_name FROM cs_corporate_db_settings";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    // output data of each row
+    while($row = $result->fetch_assoc()) {
+        
+		$hostname = $row['hostname'];
+		$username = $row['username'];
+		$password = $row['password'];
+		$database_name = $row['database_name'];
+    }
+}
+ 
+$conn->close();	
+
+} 
+
+$db['corporate'] = array(
+	'dsn'	=> '',
+	'hostname' => $hostname,
+	'username' => $username,
+	'password' => $password,
+	'database' => $database_name,
 	'dbdriver' => 'mysqli',
 	'dbprefix' => 'cs_',
 	'pconnect' => FALSE,

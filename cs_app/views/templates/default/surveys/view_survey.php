@@ -19,7 +19,7 @@
                     <!-- Sections -->
                     <?php $section_count = 1; foreach($all_questions['sections'] as $section_id => $section) { ?>
                     <div class="col-md-12 cruise_form">
-                        <h4><span><?php echo $section_count; ?></span><?php echo translate($section['language_variable']); ?></h4>
+                        <h4><!--<span><?php echo $section_count; ?></span>--><?php echo translate($section['language_variable']); ?></h4>
                         
                         <?php $outputData= array('section_id' => $section_id, 'section' => $section); 
 							  $this->load->view(TEMPLATE_FOLDER.'/surveys/components/questions',$outputData); 

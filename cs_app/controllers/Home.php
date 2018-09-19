@@ -7,7 +7,7 @@ class Home extends CI_Controller {
 
 
 	public function index()
-	{
+	{	
 		if(!isActiveVoyage())
 			redirect('home/no_active_voyage');
 		

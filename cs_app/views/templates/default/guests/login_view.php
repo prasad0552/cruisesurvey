@@ -17,6 +17,11 @@
 
 	<link rel="stylesheet" href="<?php echo assets_url(); ?>css/responsive.css" type="text/css" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
+    
+    <!-- TimePicker -->
+    <link rel="stylesheet" href="<?php echo admin_assets_url(); ?>/bootstrap/css/bootstrap.min.css">
+   <link rel="stylesheet" href="<?php echo common_assets_url(); ?>/bootstrap-datetime-picker/css/bootstrap-datetimepicker.min.css"> 
+
 
 	<!-- Document Title
 	============================================= -->
@@ -51,8 +56,13 @@
 									<h3><?php echo translate('customer-login'); ?></h3>
 
 									<div class="col_full">
-										<label for="login-form-username"><?php echo translate('login-name'); ?>:</label>
-										<input type="text" id="login_name" id="login_name" name="login_name" value="" class="form-control not-dark" />
+										<label for="login-form-username"><?php echo translate('lastname'); ?>:</label>
+										<input type="text" id="lastname" name="lastname" value="" class="form-control not-dark" />
+									</div>
+                                    
+                                    <div class="col_full">
+										<label for="login-form-username"><?php echo translate('dob'); ?>:</label>
+										<input type="text" id="date_of_birth" name="date_of_birth" value="" class="form-control not-dark" />
 									</div>
 
 									<div class="col_full">
@@ -92,6 +102,17 @@
 	<!-- Footer Scripts
 	============================================= -->
 	<script type="text/javascript" src="<?php echo assets_url(); ?>js/functions.js"></script>
+    
+    <!-- TimePicker -->
+	<script src="<?php echo common_assets_url(); ?>/bootstrap-datetime-picker/js/moment.js"></script>
+    <script src="<?php echo common_assets_url(); ?>/bootstrap-datetime-picker/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript">
+    $(function () {
+    $('#date_of_birth').datetimepicker({
+        format: 'DD-MM-YYYY'
+    });
+    });
+    </script>
 
 </body>
 </html>
