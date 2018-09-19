@@ -72,10 +72,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 $active_group = 'default';
 $query_builder = TRUE;
-$servername = 'localhost';
-$username = 'root';
-$password = '';
-$dbname = 'cruise_survey';
+$servername = 'mysql';
+$username = 'homestead';
+$password = 'secret';
+$dbname = 'cruise-survey';
 
 $db['default'] = array(
 	'dsn'	=> '',
